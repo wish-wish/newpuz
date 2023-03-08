@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+
+  <title>kodo(题目)</title>
+
+  <!--http://www.html5rocks.com/en/mobile/mobifying/-->
+  <meta name="viewport"
+        content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1,minimal-ui=true"/>
+
+  <!--https://developer.apple.com/library/safari/documentation/AppleApplications/Reference/SafariHTMLRef/Articles/MetaTags.html-->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="format-detection" content="telephone=no">
+
+  <!-- force webkit on 360 -->
+  <meta name="renderer" content="webkit"/>
+  <meta name="force-rendering" content="webkit"/>
+  <!-- force edge on IE -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+  <meta name="msapplication-tap-highlight" content="no">
+
+  <!-- force full screen on some browser -->
+  <meta name="full-screen" content="yes"/>
+  <meta name="x5-fullscreen" content="true"/>
+  <meta name="360-fullscreen" content="true"/>
+
+  <!--fix fireball/issues/3568 -->
+  <!--<meta name="browsermode" content="application">-->
+  <meta name="x5-page-mode" content="app">
+
+  <!--<link rel="apple-touch-icon" href=".png" />-->
+  <!--<link rel="apple-touch-icon-precomposed" href=".png" />-->
+
+  <link rel="stylesheet" type="text/css" href="style.css"/>
+  <script type="text/javascript">
+  
+	var isLe = (function() {
+		var buf = new ArrayBuffer(2);
+		new DataView(buf).setInt16(0, 256, true);
+		var edianflag = new Int16Array(buf)[0] === 256;
+		var da=new Date();
+		if (edianflag) {
+			console.log(da+"litten edian");
+		} else {
+			console.log(da+"big edian");
+		}
+		return edianflag;
+	})();
+		
+	var removeLoading=function(){
+		var gd=document;//.getElementById("GameDiv");
+		var loading=document.getElementById("loading");
+		if(gd&&loading)
+		{
+			//gd.removeChild(loading);
+			loading.hidden=true;
+			console.log("removeLoading 1");
+		}
+	}	
+	setTimeout(function(){		
+		var close=document.getElementById("close");
+		if(close)
+			close.hidden=false;				
+	},6000);
+	setTimeout(function(){
+		removeLoading();
+	},16000);
+	var parseParams=function()
+    {
+        var ps=[];
+        var params
+        if(window.location.search.startsWith('?'))
+            params=window.location.search.substr(1).split("&");
+        else
+            params=window.location.search.substr(0).split("&");
+        for(var i=0;i<params.length;i++)
+        {
+            var nv=params[i].split("=");
+            ps.push(nv);
+        }
+        ps.sort((a,b)=>{
+
+            return a[0].localeCompare(b[0]);
+        });
+        return ps;
+    }    	
+	var query=function(pname)
+	{
+		let params=parseParams();
+		for(let i=0;i<params.length;i++)
+		{
+			if(params[i][0]==pname)//puzzle
+			{
+				if(params[i][1].length>0)
+				{
+					let num=Number.parseInt(params[i][1]);
+					return num;
+				}
+			}
+		}
+		return 0;
+	}
+	
+	var toData=function(datastr)
+    {
+        var arrData = new Uint16Array(datastr.length);
+        for (var i = 0; i < datastr.length; i++) {
+            arrData[i] = datastr.charCodeAt(i);
+        }
+        return arrData;
+    }
+	window.onload=function()
+	{
+		let socket=new WebSocket("ws://www.5icoin.com:9818"); 
+        socket.binaryType = "arraybuffer";
+		var num=query("num")
+		if(num<2)num=7;
+		var alien=query("alien");
+        socket.onopen = function(evt) { 			
+			var str="rubric:num:"+num;
+			if(alien>0);
+				str+=":alien:1";
+            socket.send(toData(str));
+        };
+        socket.onmessage = function(evt) {              
+            var array = new Uint8Array(evt.data);
+            var str = "";
+            for (var i = 0; i < array.length; i++) {
+                str = str + String.fromCharCode(array[i]);
+            }
+			var subject=str.split(":");
+            document.getElementById("subject").innerText=subject[3]+"\n"+subject[1]+"\n"+subject[5];
+            console.log("recv:"+str.length);            
+            socket.close();
+        };
+        socket.onerror = function(evt) {            
+            socket.close();            
+        };
+        socket.onclose = function(evt) {
+            socket.close();            
+        };
+	}
+  </script>
+</head>
+<body>
+<div id="subject"></div>	
+  <!--div id="loading">拼命加载中....<button id="close" type="button" onclick=removeLoading() hidden=true>X</button></div-->	
+  <div id="GameDiv">		
+  <div id="Cocos3dGameContainer">
+	<canvas id="GameCanvas" oncontextmenu="event.preventDefault()" tabindex="0"></canvas>
+  </div>
+</div>
+
+</body>
+</html>
