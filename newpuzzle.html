@@ -2,42 +2,45 @@
 <html>
 <head>
   <meta charset="utf-8">
-
-  <title>kodo(题目)</title>
+  <!--meta name="viewport" content="width=device-width">
+  <meta name="viewport" content="initial-scale=1"-->
+  <title>kodo(题目,答案,畸形)</title>
+  <!--link rel="stylesheet" type="text/css" href="style.css"/-->
   <script type="text/javascript">
   
-	var isLe = (function() {
-		var buf = new ArrayBuffer(2);
-		new DataView(buf).setInt16(0, 256, true);
-		var edianflag = new Int16Array(buf)[0] === 256;
-		var da=new Date();
-		if (edianflag) {
-			console.log(da+"litten edian");
-		} else {
-			console.log(da+"big edian");
-		}
-		return edianflag;
-	})();
-		
-	var removeLoading=function(){
-		var gd=document;//.getElementById("GameDiv");
-		var loading=document.getElementById("loading");
-		if(gd&&loading)
-		{
-			//gd.removeChild(loading);
-			loading.hidden=true;
-			console.log("removeLoading 1");
-		}
-	}	
-	setTimeout(function(){		
-		var close=document.getElementById("close");
-		if(close)
-			close.hidden=false;				
-	},6000);
-	setTimeout(function(){
-		removeLoading();
-	},16000);
-	var parseParams=function()
+    var isLe = (function() {
+        var buf = new ArrayBuffer(2);
+        new DataView(buf).setInt16(0, 256, true);
+        var edianflag = new Int16Array(buf)[0] === 256;
+        var da=new Date();
+        if (edianflag) {
+            console.log(da+"litten edian");
+        } else {
+            console.log(da+"big edian");
+        }
+        return edianflag;
+    })();
+        
+    var removeLoading=function(){
+        var gd=document;//.getElementById("GameDiv");
+        var loading=document.getElementById("loading");
+        if(gd&&loading)
+        {
+            //gd.removeChild(loading);
+            loading.hidden=true;
+            console.log("removeLoading 1");
+        }
+    }
+    setTimeout(function(){
+        var close=document.getElementById("close");
+        if(close)
+            close.hidden=false;
+    },6000);
+    setTimeout(function(){
+        removeLoading();
+    },16000);
+    
+    var parseParams=function()
     {
         var ps=[];
         var params
@@ -55,25 +58,25 @@
             return a[0].localeCompare(b[0]);
         });
         return ps;
-    }    	
-	var query=function(pname)
-	{
-		let params=parseParams();
-		for(let i=0;i<params.length;i++)
-		{
-			if(params[i][0]==pname)//puzzle
-			{
-				if(params[i][1].length>0)
-				{
-					let num=Number.parseInt(params[i][1]);
-					return num;
-				}
-			}
-		}
-		return 0;
-	}
-	
-	var toData=function(datastr)
+    }
+    var query=function(pname)
+    {
+        let params=parseParams();
+        for(let i=0;i<params.length;i++)
+        {
+            if(params[i][0]==pname)//puzzle
+            {
+                if(params[i][1].length>0)
+                {
+                    let num=Number.parseInt(params[i][1]);
+                    return num;
+                }
+            }
+        }
+        return 0;
+    }
+    
+    var toData=function(datastr)
     {
         var arrData = new Uint16Array(datastr.length);
         for (var i = 0; i < datastr.length; i++) {
@@ -81,20 +84,623 @@
         }
         return arrData;
     }
-	window.onload=function()
-	{
-		var addr="ws://www.5icoin.com:9818";
-		if(window.location.href.startsWith("https://"))
-			addr="wss://www.5icoin.com:9817";
-		let socket=new WebSocket(addr); 
+    var dispSodoku=function(data)
+    {
+        var str="";
+        str="<table border='1'>";
+        var a=data.split('.');
+        let n=Math.sqrt(a[0].length);
+        for(var i=0;i<n;i++)
+        {
+            str+="<tr>";
+            for(var j=0;j<n;j++)
+            {
+                str+="<td>"+a[0][i*n+j]+"</td>";
+            }
+            str+="</tr>";
+        }
+        str+="</table>";
+        return str;
+    }
+    var ctx;
+    var canvas;
+    var size=50;
+    var optionnum=21;
+    var puz=""    
+    //var offsetx=1.4;
+    //var offsety=1.4;    
+    var offsetx=0.4;
+    var offsety=0.4;
+    var offunx=0.2;
+    var offuny=0.2;
+    var num=7;
+    var cells=[]; 
+    var funs=[];
+    var gblock="";
+    var gpuzzle="";
+    var ganswer="";
+    var selectcell=null;
+    var blocks=[];    
+    var appendBolds=function(bolds,line)
+    {
+        ctx.moveTo(line[0],line[1]);
+        ctx.lineTo(line[2],line[3]);
+        for(var i=0;i<bolds.length;i++)
+        {
+            if(bolds[i][0]-line[0]<0.0000001
+                &&bolds[i][1]-line[1]<0.0000001
+                &&bolds[i][2]-line[2]<0.0000001
+                &&bolds[i][3]-line[3]<0.0000001)
+                {
+                    bolds.push(line);
+                    return true;
+                }
+        }
+        return false;
+    }
+    var drawLoading=function()
+    {
+        ctx.lineWidth=1;  
+        ctx.font = "20px serif";
+        //ctx.font="italic 35px 黑体";  
+        ctx.strokeStyle="#000099";
+        ctx.fillStyle="red";        
+        ctx.textAlign="center";
+        ctx.textBaseline="middle";        
+        ctx.beginPath();
+        var width=120;
+        var height=50;
+        var offset=canvas.width/2-width/2;
+        ctx.moveTo(0+offset,0+offset);
+        ctx.lineTo(width+offset,0+offset);
+        ctx.fillText(0,width/2+offset,0+offset);
+        ctx.lineTo(width+offset,height+offset);
+        ctx.fillText(1,width+offset,height/2+offset);
+        ctx.lineTo(0+offset,height+offset);
+        ctx.fillText(2,width/2+offset,height+offset);        
+        ctx.lineTo(0+offset,0+offset);   
+        ctx.fillText(3,0+offset,height/2+offset);
+        ctx.fillText('拼命载...',width/2+offset,height/2+offset);
+        ctx.closePath();
+        ctx.stroke();
+        //ctx.fill();
+    }
+    var qryCode=function(val)
+    {
+        var str="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz@";
+        return str[val];
+    }
+    var drawKodoku=function(puzzle,block)
+    {        
+        gblock=block;
+        gpuzzle=puzzle;
+        ctx.lineWidth=1;        
+        var a=puzzle.split('.');
+        num=Math.sqrt(a[0].length);
+        puz=a[0];
+        ctx.font = "40px serif";
+        //ctx.font="italic 35px 黑体";  
+        ctx.strokeStyle="#000099";
+        ctx.fillStyle="red";
+        ctx.textAlign="center";
+        ctx.textBaseline="middle";        
+        ctx.beginPath();
+        cells=[];
+        for(var i=0;i<num;i++)
+        {
+            cells.push([]);
+            for(var j=0;j<num;j++)
+            {
+                var val=a[0][i*num+j];
+                var bid=block[i*num+j];                
+                ctx.moveTo((i+offsetx)*size,(j+offsety)*size);
+                ctx.lineTo((i+offsetx)*size,(j+1+offsety)*size);                
+                ctx.lineTo((i+1+offsetx)*size,(j+1+offsety)*size);
+                ctx.lineTo((i+1+offsetx)*size,(j+offsety)*size);
+                ctx.lineTo((i+offsetx)*size,(j+offsety)*size);                                
+                if(val!='0'){
+                    ctx.fillText(val,(i+0.5+offsetx)*size,(j+0.5+offsety)*size);
+                }
+                //左下右上
+                var b={minx:(i+offsetx)*size,miny:(j+offsety)*size,maxx:(i+1+offsetx)*size,maxy:(j+1+offsety)*size,value:val,bi:bid
+                    ,lines:[[(i+offsetx)*size,(j+offsety)*size,(i+offsetx)*size,(j+1+offsety)*size]
+                        ,[(i+offsetx)*size,(j+1+offsety)*size,(i+1+offsetx)*size,(j+1+offsety)*size]
+                        ,[(i+1+offsetx)*size,(j+1+offsety)*size,(i+1+offsetx)*size,(j+offsety)*size]
+                        ,[(i+1+offsetx)*size,(j+offsety)*size,(i+offsetx)*size,(j+offsety)*size]],user:false,x:i,y:j};
+                cells[i].push(b);
+            }
+        }                        
+        ctx.closePath();        
+        ctx.stroke();  
+        
+        strokeFuns();
+        storkeAlien(block);
+    }    
+    
+    function strokeFuns()
+    {
+        funs=[];
+        funs.push([]);
+        ctx.beginPath();
+        ctx.lineWidth=1;
+        ctx.fillStyle="red";
+        
+        let hpy=num+offsety+offuny; 
+        let hpx=offsetx; 
+        funs.push([]);        
+        for(var i=0;i<num;i++)//bottom
+        {
+            ctx.moveTo((hpx+i)*size,(hpy)*size);
+            ctx.lineTo((hpx+i)*size,(hpy+1)*size);
+            ctx.lineTo((hpx+i+1)*size,(hpy+1)*size);
+            ctx.lineTo((hpx+i+1)*size,(hpy)*size);
+            ctx.lineTo((hpx+i)*size,(hpy)*size);  
+            ctx.fillText(qryCode(i+1),(hpx+i+0.5)*size,(hpy+0.5)*size);
+            var c={minx:(hpx+i)*size,miny:(hpy)*size,maxx:(hpx+i+1)*size,maxy:(hpy+1)*size,value:qryCode(i+1)};
+            funs[funs.length-1].push(c);            
+        }
+        
+        /*
+        hpx=num+offsetx+offunx;
+        hpy=offsety;
+        funs.push([]);
+        for(var i=0;i<num;i++)//right
+        {
+            ctx.moveTo((hpx)*size,(hpy+i)*size);
+            ctx.lineTo((hpx)*size,(hpy+1+i)*size);
+            ctx.lineTo((hpx+1)*size,(hpy+1+i)*size);
+            ctx.lineTo((hpx+1)*size,(hpy+i)*size);
+            ctx.lineTo((hpx)*size,(hpy+i)*size);  
+            
+            ctx.fillText(qryCode(funs[1].length*2-i),(hpx+0.5)*size,(hpy+i+0.5)*size);            
+            var c={minx:(hpx)*size,miny:(hpy+i)*size,maxx:(hpx+1)*size,maxy:(hpy+i+1)*size,value:qryCode(funs[1].length*2-i)};
+            funs[funs.length-1].push(c);
+        } 
+        
+        hpy=offuny;
+        hpx=offsetx;        
+        for(var i=0;i<num;i++)//top
+        {
+            ctx.moveTo((hpx+i)*size,(hpy)*size);
+            ctx.lineTo((hpx+i)*size,(hpy+1)*size);
+            ctx.lineTo((hpx+i+1)*size,(hpy+1)*size);
+            ctx.lineTo((hpx+i+1)*size,(hpy)*size);
+            ctx.lineTo((hpx+i)*size,(hpy)*size);  
+            var c={minx:(hpx+i)*size,miny:(hpy)*size,maxx:(hpx+i+1)*size,maxy:(hpy+1)*size,value:''};
+            funs[funs.length-1].push(c);
+        }              
+        
+        hpy=offsety;
+        hpx=offunx;
+        funs.push([]);
+        for(var i=0;i<num;i++)//left
+        {
+            ctx.moveTo((hpx)*size,(hpy+i)*size);
+            ctx.lineTo((hpx)*size,(hpy+i+1)*size);
+            ctx.lineTo((hpx+1)*size,(hpy+i+1)*size);
+            ctx.lineTo((hpx+1)*size,(hpy+i)*size);
+            ctx.lineTo((hpx)*size,(hpy+i)*size); 
+            var c={minx:(hpx)*size,miny:(hpy+i)*size,maxx:(hpx+1)*size,maxy:(hpy+i+1)*size,value:0};
+            funs[funs.length-1].push(c);            
+        }
+        */        
+     
+        ctx.closePath();        
+        ctx.stroke();    
+    }
+    
+    function storkeAlien(block)
+    {
+        var bolds=[];
+        ctx.lineWidth=5;
+        //ctx.lineStyle="red";
+        ctx.beginPath();        
+        for(var i=0;i<num;i++)
+        {                
+            for(var j=0;j<num;j++)
+            {                    
+                var idx=i*num+j;
+                if(i<num-1)
+                {
+                    var idx1=(i+1)*num+j;
+                    if(block[idx]!=block[idx1])
+                    {                            
+                        appendBolds(bolds,cells[i][j].lines[2]);                        
+                    }
+                }
+                if(j<num-1)
+                {
+                    var idx2=(i*num)+j+1;
+                    if(block[idx]!=block[idx2])
+                    {                            
+                        appendBolds(bolds,cells[i][j].lines[1]);
+                    }
+                }                    
+                if(i==0)
+                {
+                    appendBolds(bolds,cells[i][j].lines[0]);
+                }
+                if(j==0)
+                {
+                    appendBolds(bolds,cells[i][j].lines[3]);                        
+                }
+                if(i==num-1)
+                {
+                    appendBolds(bolds,cells[i][j].lines[2]);
+                }
+                if(j==num-1)
+                {
+                    appendBolds(bolds,cells[i][j].lines[1]);
+                }
+            }
+        }               
+        ctx.closePath();        
+        ctx.stroke();
+    }
+    function drawFillCell(cell,color="green")
+    {
+        var path=new Path2D();
+        ctx.lineWidth=1;
+        path.moveTo(cell.lines[0][0],cell.lines[0][1]);
+        path.lineTo(cell.lines[0][2],cell.lines[0][3]);
+        path.lineTo(cell.lines[1][2],cell.lines[1][3]);
+        path.lineTo(cell.lines[2][2],cell.lines[2][3]);
+        path.lineTo(cell.lines[3][2],cell.lines[3][3]);
+        path.closePath();        
+        ctx.fillStyle=color;        
+        ctx.fill(path);
+        ctx.stroke(path);        
+    }
+    function drawPathCell(cell)
+    {
+        var path=new Path2D();  
+        ctx.lineWidth=1;
+        path.moveTo(cell.lines[0][0],cell.lines[0][1]);
+        path.lineTo(cell.lines[0][2],cell.lines[0][3]);
+        path.lineTo(cell.lines[1][2],cell.lines[1][3]);
+        path.lineTo(cell.lines[2][2],cell.lines[2][3]);
+        path.lineTo(cell.lines[3][2],cell.lines[3][3]);
+        path.closePath();        
+        ctx.strokeStyle="blue";        
+        ctx.stroke(path);        
+    }       
+    function fillTexts(isStroke=false)
+    {        
+        for(let i=0;i<num;i++)
+        {
+            for(let j=0;j<num;j++)
+            {
+                if(cells[i][j].value>0)
+                {
+                    fillText(cells[i][j]);
+                }
+            }
+        }        
+    }    
+    function fillText(cell,isStroke=false)
+    {
+        ctx.beginPath();
+        ctx.fillStyle="red";
+        ctx.strokeStyle="blue"; 
+        //ctx.clearRect(cell.minx,cell.miny,cell.maxx,cell.maxy);
+        if(cell.value>0)
+        {
+            if(isStroke||cell.user)
+                ctx.strokeText(cell.value,cell.lines[0][0]+0.5*size,cell.lines[0][1]+0.5*size);
+            else
+                ctx.fillText(cell.value,cell.lines[0][0]+0.5*size,cell.lines[0][1]+0.5*size);
+        }
+        ctx.closePath();
+        ctx.stroke();
+    }
+    function drawSelect(cx,cy)
+    {
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        let hid=cells[cx][cy].bi;        
+        for(let i=0;i<num;i++)
+        {
+            for(let j=0;j<num;j++)
+            {
+                if(i==cx)
+                {
+                    drawFillCell(cells[i][j]);
+                }
+                if(j==cy)
+                {
+                    drawFillCell(cells[i][j]);
+                }
+                if(hid==cells[i][j].bi)
+                {                    
+                    drawFillCell(cells[i][j]);
+                }
+                else
+                {
+                    drawPathCell(cells[i][j]);
+                }
+                
+            }
+        }
+        drawFillCell(cells[cx][cy],"yellow");
+        storkeAlien(gblock);
+        strokeFuns();
+        fillTexts();
+    }
+    function amouseout(e)
+    {
+        //console.log(e);
+    }
+    function amouseover(e)
+    {
+        //console.log(e);
+    }
+    function adrop(e)
+    {
+        console.log(e);
+    }
+    function adragenter(e)
+    {
+        console.log(e);
+    }
+    function apaste(e)
+    {
+        console.log(e);
+    }
+    function akeydown(e)
+    {
+        console.log(e);
+    }
+    function akeyup(e)
+    {
+        console.log(e);
+    }    
+    function qryHitCells(posx,posy)
+    {
+        for(var i=0;i<num;i++)
+        {
+            for(var j=0;j<num;j++)
+            {
+                if(posx>cells[i][j].minx&&posx<cells[i][j].maxx&&posy<cells[i][j].maxy&&posy>cells[i][j].miny)
+                {
+                    return [0,i,j];
+                }
+            }
+        }
+        for(var i=0;i<funs.length;i++)
+        {
+            for(var j=0;j<funs[i].length;j++)
+            {
+                if(posx>funs[i][j].minx&&posx<funs[i][j].maxx&&posy<funs[i][j].maxy&&posy>funs[i][j].miny)
+                {
+                    return [1,i,j];
+                }
+            }
+        }
+        return [-1,0,0];
+    }
+    function getBlock(bi)
+    {
+        for(var i=0;i<blocks.length;i++)
+        {
+            if(blocks[i].bi==bi)
+            {
+                return blocks[i];
+            }
+        }
+        return null;
+    }
+    function getGroups()
+    {
+        blocks=[];
+        for(var i=0;i<gblock.length;i++)
+        {
+            var x=Math.floor(i/num);
+            var y=i%num;
+            var blo=getBlock(gblock[i]);
+            if(blo!=null)
+            {
+                blo.cells.push(cells[x][y]);
+            }
+            else
+            {                
+                var group={bi:gblock[i],cells:[]};
+                blocks.push(group);
+                group.cells.push(cells[x][y]);
+            }
+        }
+        return blocks;
+    }
+    function bigger(i,j,val)
+    {
+        if(parseInt(cells[i][j].value)>val)
+        {
+            return true;
+        }
+        return false;
+    }
+    function checkSuccess()
+    {        
+        var ret=true,ret1=true,ret2=true;
+        var vals=[],vals1=[],vals2=[];
+        var unsuccs=[];
+        for(var i=0;i<num;i++)
+        {
+            vals=[];
+            //floor
+            for(var j=0;j<num;j++)
+            {
+                if(vals.indexOf(cells[i][j].value)>=0)
+                {
+                    ret=false;
+                    unsuccs.push({x:i,y:j,value:cells[i][j].value});
+                    break;
+                }
+                if(bigger(i,j,0))
+                {
+                    vals.push(cells[i][j].value);                
+                }
+            }
+            if(!ret) break;
+            if(ret&&vals.length==num)
+            {            
+                vals1=[];
+                //tower
+                for(var j=0;j<num;j++)
+                {
+                    if(vals1.indexOf(cells[j][i].value)>=0)
+                    {
+                        ret1=false;
+                        unsuccs.push({x:i,y:j,value:cells[i][j].value});
+                        break;
+                    }
+                    if(bigger(i,j,0))
+                    {
+                        vals1.push(cells[j][i].value);   
+                    }
+                }
+                if(!ret1) break;
+            }
+        }        
+        if(ret1&&ret&&vals.length==num&&vals1.length==num)
+        {
+            getGroups();
+            for(var i=0;i<blocks.length;i++)
+            {
+                vals2=[];
+                for(var j=0;j<blocks[i].cells.length;j++)
+                {
+                    if(vals2.indexOf(blocks[i].cells[j].value)>=0)
+                    {
+                        ret2=false;
+                        unsuccs.push({x:i,y:j,value:cells[i][j].value});
+                        break;
+                    }
+                    if(parseInt(blocks[i].cells[j].value)>0)
+                    {
+                        vals2.push(blocks[i].cells[j].value);
+                    }
+                }
+                if(!ret2)
+                {
+                    break;
+                }
+            }            
+        }
+        if(ret&&ret1&&ret2&&vals.length==num&&vals1.length==num&&vals2.length==num){
+            isCheck=true;
+            console.log("checkSuccess");
+        }
+        return ret&&ret1&&ret2&&vals.length==num&&vals1.length==num&&vals2.length==num;
+    }
+    function checkAnswer()
+    {
+        var ret=true;
+        for(var i=0;i<num;i++)
+        {
+            for(var j=0;j<num;j++)
+            {
+                if(parseInt(cells[i][j].value)!=parseInt(ganswer[i*num+j]))
+                {
+                    ret=false;
+                    break;
+                }
+            }
+            if(!ret) break;
+        }
+        if(ret){
+            isCheck=true;
+            console.log('checkAnswer');
+        }
+        return ret;
+    }
+    function reStart()
+    {
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        document.getElementById("subject").innerText="";
+        drawLoading();
+        setTimeout(function(){            
+            sockeRequect(num);
+        },1000);        
+    }
+    var isCheck=false;
+    setInterval(function(){
+        if(!isCheck&&(checkAnswer()||checkSuccess()))
+        {      
+            isCheck=true;
+            reStart();
+        }
+    },3000);
+    function amousedown(e)
+    {
+        //PointerEvent,鼠标，手指触摸，触摸笔，多点触控，压感
+        //MouseEvent，鼠标
+        //TouchEvent，移动
+        
+        //通过style会被拉伸
+                
+        //console.log(e,canvas);        
+                
+        var posx=e.pageX-canvas.offsetLeft;
+        var posy=e.pageY-canvas.offsetTop;        
+        //console.log(cells[0][0],cells[6][6],posx,posy);
+        //console.log(posx,posy,window);
+        var hits=qryHitCells(posx,posy);
+        if(hits[0]==0)
+        {
+            //console.log(puz[hits[1]*num+hits[2]]);
+            drawSelect(hits[1],hits[2]);
+            selectcell=cells[hits[1]][hits[2]];                       
+        }
+        else if(hits[0]==1)
+        {
+            console.log(funs[hits[1]][hits[2]].value);
+            if(selectcell&&funs[hits[1]][hits[2]].value<num+1)
+            {
+                selectcell.value=funs[hits[1]][hits[2]].value;
+                selectcell.user=true;
+                //fillText(selectcell,true);
+                drawSelect(selectcell.x,selectcell.y);
+                //fillTexts();
+            }
+            else if(funs[hits[1]][hits[2]].value==num+1)
+            {
+                if(checkAnswer())
+                {                                       
+                    reStart();
+                }
+            }
+        }        
+        /*
+        ctx.beginPath();        
+        ctx.moveTo(posx,posy);
+        ctx.lineTo(posx,posy+0.3*size);
+        ctx.lineTo(0.3*size+posx,posy+0.3*size);
+        ctx.lineTo(0.3*size+posx,posy);
+        ctx.lineTo(posx,posy);        
+        ctx.closePath();        
+        ctx.stroke();
+        */
+    }
+    function amousemove(e)
+    {
+        //console.log(e);
+    }
+    function amouseup(e)
+    {
+        //console.log(e);
+    }
+    function awheel(e)
+    {
+        console.log(e);
+    }   
+    function sockeRequect(num)
+    {        
+        var addr="ws://www.5icoin.com:9818";
+        if(window.location.href.startsWith("https://"))
+            addr="wss://www.5icoin.com:9817";
+        let socket=new WebSocket(addr); 
         socket.binaryType = "arraybuffer";
-		var num=query("num")
-		if(num<2)num=7;
-		var alien=query("alien");
-        socket.onopen = function(evt) { 			
-			var str="rubric:num:"+num;
-			if(alien>0);
-				str+=":alien:1";
+        socket.onopen = function(evt) {
+            var str="rubric:num:"+num;
             socket.send(toData(str));
         };
         socket.onmessage = function(evt) {              
@@ -103,23 +709,143 @@
             for (var i = 0; i < array.length; i++) {
                 str = str + String.fromCharCode(array[i]);
             }
-			var subject=str.split(":");
-            document.getElementById("subject").innerText=subject[3]+"\n"+subject[1]+"\n"+subject[5];
-            console.log("recv:"+str.length);            
+            var subject=str.split(":");
+            document.getElementById("subject").innerText=subject[3]+"\n"+subject[1]+"\n"+subject[5];	
+            ganswer=subject[1];
+            ctx.clearRect(0,0,canvas.width,canvas.height);                        
+            drawKodoku(subject[3],subject[5]);
+            isCheck=false;
+            console.log("recv:"+str.length);
+            socket.close();            
+        };
+        socket.onerror = function(evt) {
             socket.close();
         };
-        socket.onerror = function(evt) {            
-            socket.close();            
-        };
         socket.onclose = function(evt) {
-            socket.close();            
+            socket.close();
         };
-	}
+    }
+    
+    var addSelects=function(select,num)
+    {
+        var sel="<select id='select'>"
+        for(var i=2;i<optionnum;i++)
+        {
+            if(i==num)
+                sel+="<option value="+i+" selected='selected'>Size="+i+"</option>"    
+            else
+                sel+="<option value="+i+">Size="+i+"</option>"    
+        }
+        sel+="</select>"
+        select.innerHTML=sel;
+    }
+    
+    window.onresize=function(e)
+    {
+        //console.log(e.currentTarget.innerWidth,e.currentTarget.innerHeight,e.srcElement.innerWidth,e.srcElement.innerHeight,e.target.innerWidth,e.target.innerHeight);
+        canvas.width=e.target.innerWidth;
+        canvas.height=e.target.innerHeight;
+    }
+    window.onload=function()
+    {        
+        canvas=document.getElementById("sudoku");
+        ctx=canvas.getContext("2d"); 
+        canvas.width=window.innerWidth;
+        canvas.height=window.innerHeight;        
+        drawLoading();
+        
+        var span=document.createElement('span');
+        span.innerText="Change Size of Sudoku:";
+        var select=document.createElement('select');
+        //οnchange="setDelType(this)"
+        //addSelects(select,7);        
+        select.addEventListener("change",(e)=>{
+            console.log(select.value);
+            document.getElementById("subject").innerText="";
+            ctx.clearRect(0,0,canvas.width,canvas.height);
+            num=select.value;
+            canvas.width=(num+3)*size;
+            canvas.height=(num+3)*size;
+            sockeRequect(num);
+        });
+        var puzinfo=document.getElementById("puzinfo");
+        var subj=document.getElementById("subject");
+        puzinfo.insertBefore(span,subj);
+        puzinfo.insertBefore(select,subj);        
+        canvas.onselectstart = function (e) { return false; };		//for Chrome, disable text select while dragging        
+        canvas.addEventListener('drop', adrop, false);
+        canvas.addEventListener('dragenter', adragenter, false);
+
+        // Key Listeners
+        canvas.addEventListener('paste', apaste, false);
+        canvas.addEventListener('keydown', akeydown, false);
+        canvas.addEventListener('keyup', akeyup, false);
+        
+        // Mouse Interaction Listeners
+        canvas.addEventListener('mouseout', amouseout, false);
+        canvas.addEventListener('mouseover', amouseover, false);        
+        canvas.addEventListener('mousedown', amousedown, false);
+        canvas.addEventListener('mousemove', amousemove, false);
+        canvas.addEventListener('mouseup', amouseup, false);
+        canvas.addEventListener('wheel', awheel, false);
+        
+        canvas.addEventListener('pointerdown', (e)=>{ 
+        
+            }, false);
+        canvas.addEventListener('pointermove',  (e)=>{ 
+        
+            }, false);        
+        canvas.addEventListener('pointerup',  (e)=>{ 
+        
+            }, false);
+        canvas.addEventListener('pointerleave', (e)=>{ 
+        
+            }, false);
+        canvas.addEventListener('pointercancel', (e)=>{ 
+        
+            }, false);        
+        
+        canvas.addEventListener('mouseleave', (e)=>{ 
+        
+            }, false);
+        
+        canvas.addEventListener('touchstart', (e)=>{ 
+        
+            }, false);        
+        canvas.addEventListener('touchmove', (e)=>{ 
+        
+            }, false);
+        canvas.addEventListener('touchend', (e)=>{ 
+        
+            }, false);
+        canvas.addEventListener('touchcancel', (e)=>{ 
+        
+            }, false);
+        
+        canvas.addEventListener('onresize', (e)=>{ 
+            console.log(e);
+            }, false);
+        
+               
+        var num=query("num")
+        if(num<2)num=7;
+        addSelects(select,num);
+        canvas.width=(num+3)*size;
+        canvas.height=(num+3)*size;
+        var alien=query("alien");
+        sockeRequect(num);        
+    }
   </script>
 </head>
 <body>
-<div id="subject"></div>	
-  <!--div id="loading">拼命加载中....<button id="close" type="button" onclick=removeLoading() hidden=true>X</button></div-->	
+  <div id="puzinfo">
+    <div id="subject"></div>	
+  </div>  
+  <!--div id="loading">拼命加载中....<button id="close" type="button" onclick=removeLoading() hidden=true>X</button></div>
+  <div><a href="/Hodoku.jar">Hodoku<a></div-->
+
+  <canvas id="sudoku" width="1000" height="1000"></canvas>
+  <!--div><a href="/NPGen.jar">NPGen<a></div-->
 </div>
 
 </body>
