@@ -638,6 +638,11 @@
     {
         ctx.clearRect(0,0,canvas.width,canvas.height);
         document.getElementById("subject").innerText="";
+        var puzinfo=document.getElementById("puzinfo");
+        var span=document.getElementById("span");
+        var select=document.getElementById("select");
+        puzinfo.removeChild(span);            
+        puzinfo.removeChild(select);
         drawLoading();
         setTimeout(function(){            
             sockeRequect(num);
@@ -800,7 +805,9 @@
     {
         var span=document.createElement('span');
         span.innerText="Change Size of Sudoku:";
-        var select=document.createElement('select');        
+        var select=document.createElement('select'); 
+        select.id="select";
+        span.id="span";
         var puzinfo=document.getElementById("puzinfo");
         select.style="font-size:x-large";
         //addSelects(select,7);        
