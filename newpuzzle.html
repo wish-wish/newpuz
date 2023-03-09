@@ -30,16 +30,21 @@
             loading.hidden=true;
             console.log("removeLoading 1");
         }
-    }
-    setTimeout(function(){
-        var close=document.getElementById("close");
-        if(close)
-            close.hidden=false;
-    },6000);
-    setTimeout(function(){
-        removeLoading();
-    },16000);
-    
+    }    
+    function showLoading()
+    {
+        var loading=document.getElementById("loading");
+        if(loading) loading.hidden=false;
+        setTimeout(function(){
+            var close=document.getElementById("close");
+            if(close)
+                close.hidden=false;
+        },9000);
+        setTimeout(function(){
+            removeLoading();
+        },81000);
+    }    
+    showLoading();
     var parseParams=function()
     {
         var ps=[];
@@ -105,14 +110,14 @@
     var ctx;
     var canvas;
     var size=50;
-    var optionnum=21;
+    var optionnum=13;
     var puz=""    
     //var offsetx=1.4;
     //var offsety=1.4;    
-    var offsetx=0.4;
-    var offsety=0.4;
-    var offunx=0.2;
-    var offuny=0.2;
+    var offsetx=0;
+    var offsety=0;
+    var offunx=0.1;
+    var offuny=0.1;
     var num=7;
     var cells=[]; 
     var funs=[];
@@ -121,6 +126,14 @@
     var ganswer="";
     var selectcell=null;
     var blocks=[];    
+    function adaptsize(width,height)
+    {
+        let s=width;
+        if(s>height) s= height;
+        size=Math.floor(s/(num+0.05));
+        canvas.width=size*(num+0.1);
+        canvas.height=size*(num+1.11);
+    }
     var appendBolds=function(bolds,line)
     {
         ctx.moveTo(line[0],line[1]);
@@ -141,26 +154,28 @@
     var drawLoading=function()
     {
         ctx.lineWidth=1;  
-        ctx.font = "20px serif";
+        ctx.font = size/5+"px serif";
         //ctx.font="italic 35px 黑体";  
         ctx.strokeStyle="#000099";
         ctx.fillStyle="red";        
         ctx.textAlign="center";
         ctx.textBaseline="middle";        
         ctx.beginPath();
-        var width=120;
-        var height=50;
+        var width=180*size/100;
+        var height=50*size/100;
         var offset=canvas.width/2-width/2;
         ctx.moveTo(0+offset,0+offset);
-        ctx.lineTo(width+offset,0+offset);
-        ctx.fillText(0,width/2+offset,0+offset);
-        ctx.lineTo(width+offset,height+offset);
-        ctx.fillText(1,width+offset,height/2+offset);
-        ctx.lineTo(0+offset,height+offset);
-        ctx.fillText(2,width/2+offset,height+offset);        
+        ctx.lineTo(width+offset,0+offset);        
+        ctx.lineTo(width+offset,height+offset);        
+        ctx.lineTo(0+offset,height+offset);        
         ctx.lineTo(0+offset,0+offset);   
-        ctx.fillText(3,0+offset,height/2+offset);
-        ctx.fillText('拼命载...',width/2+offset,height/2+offset);
+        
+        ctx.fillText(1,width/2+offset,0+offset);
+        ctx.fillText(2,width+offset,height/2+offset);
+        ctx.fillText(3,width/2+offset,height+offset);        
+        ctx.fillText(4,0+offset,height/2+offset);
+        
+        ctx.fillText('拼命加载中...',width/2+offset,height/2+offset);
         ctx.closePath();
         ctx.stroke();
         //ctx.fill();
@@ -178,7 +193,7 @@
         var a=puzzle.split('.');
         num=Math.sqrt(a[0].length);
         puz=a[0];
-        ctx.font = "40px serif";
+        ctx.font = size/2+"px serif";
         //ctx.font="italic 35px 黑体";  
         ctx.strokeStyle="#000099";
         ctx.fillStyle="red";
@@ -210,7 +225,8 @@
                 cells[i].push(b);
             }
         }                        
-        ctx.closePath();        
+        ctx.closePath();  
+               
         ctx.stroke();  
         
         strokeFuns();
@@ -222,7 +238,7 @@
         funs=[];
         funs.push([]);
         ctx.beginPath();
-        ctx.lineWidth=1;
+        ctx.lineWidth=3;
         ctx.fillStyle="red";
         
         let hpy=num+offsety+offuny; 
@@ -380,13 +396,19 @@
     function fillText(cell,isStroke=false)
     {
         ctx.beginPath();
-        ctx.fillStyle="red";
+        if(isStroke||cell.user)
+            ctx.fillStyle="#00ffff";
+        else
+            ctx.fillStyle="red";
         ctx.strokeStyle="blue"; 
         //ctx.clearRect(cell.minx,cell.miny,cell.maxx,cell.maxy);
         if(cell.value>0)
         {
             if(isStroke||cell.user)
+            {
+                ctx.fillText(cell.value,cell.lines[0][0]+0.5*size,cell.lines[0][1]+0.5*size);
                 ctx.strokeText(cell.value,cell.lines[0][0]+0.5*size,cell.lines[0][1]+0.5*size);
+            }
             else
                 ctx.fillText(cell.value,cell.lines[0][0]+0.5*size,cell.lines[0][1]+0.5*size);
         }
@@ -395,7 +417,7 @@
     }
     function drawSelect(cx,cy)
     {
-        ctx.clearRect(0,0,canvas.width,canvas.height);
+        //ctx.clearRect(0,0,canvas.width,canvas.height);
         let hid=cells[cx][cy].bi;        
         for(let i=0;i<num;i++)
         {
@@ -652,7 +674,7 @@
         }
         else if(hits[0]==1)
         {
-            console.log(funs[hits[1]][hits[2]].value);
+            //console.log(funs[hits[1]][hits[2]].value);
             if(selectcell&&funs[hits[1]][hits[2]].value<num+1)
             {
                 selectcell.value=funs[hits[1]][hits[2]].value;
@@ -710,9 +732,15 @@
                 str = str + String.fromCharCode(array[i]);
             }
             var subject=str.split(":");
-            document.getElementById("subject").innerText=subject[3]+"\n"+subject[1]+"\n"+subject[5];	
+            var subj=document.getElementById("subject");
+            //subj.style="font-size:xxx-small";
+            subj.innerText=subject[3]+"\n"+subject[1]+"\n"+subject[5];	
             ganswer=subject[1];
-            ctx.clearRect(0,0,canvas.width,canvas.height);                        
+            gpuzzle=subject[3];
+            gblock=subject[5]; 
+            removeLoading();
+            initSelect();
+            ctx.clearRect(0,0,canvas.width,canvas.height);            
             drawKodoku(subject[3],subject[5]);
             isCheck=false;
             console.log("recv:"+str.length);
@@ -729,8 +757,9 @@
     var addSelects=function(select,num)
     {
         var sel="<select id='select'>"
+        if(num>=optionnum)num=optionnum-1;
         for(var i=2;i<optionnum;i++)
-        {
+        {        
             if(i==num)
                 sel+="<option value="+i+" selected='selected'>Size="+i+"</option>"    
             else
@@ -742,36 +771,60 @@
     
     window.onresize=function(e)
     {
-        //console.log(e.currentTarget.innerWidth,e.currentTarget.innerHeight,e.srcElement.innerWidth,e.srcElement.innerHeight,e.target.innerWidth,e.target.innerHeight);
-        canvas.width=e.target.innerWidth;
-        canvas.height=e.target.innerHeight;
+        //console.log(e.currentTarget.innerWidth,e.currentTarget.innerHeight,e.srcElement.innerWidth
+        //,e.srcElement.innerHeight,e.target.innerWidth,e.target.innerHeight,window);
+        //canvas.width=e.target.innerWidth;
+        //canvas.height=e.target.innerHeight;
+        adaptsize(e.currentTarget.innerWidth,e.currentTarget.innerHeight*0.9);
+        ctx.clearRect(0,0,canvas.width,canvas.height);                        
+        drawKodoku(gpuzzle,gblock);
+        isCheck=false;
     }
-    window.onload=function()
-    {        
-        canvas=document.getElementById("sudoku");
-        ctx=canvas.getContext("2d"); 
-        canvas.width=window.innerWidth;
-        canvas.height=window.innerHeight;        
-        drawLoading();
-        
+    function refresh()
+    {
+        //todo:刷新无法画Loading
+        const oldWidth = canvas.current.width;
+        const oldHeight = canvas.current.height;
+        // 先隐藏canvas
+        canvas.current.style.display = 'none';
+        const ctx = canvas.current.getContext('2d');
+        // 保存canvas设置，清楚画布区域
+        ctx?.save();
+        ctx?.setTransform(1, 0, 0, 1, 0, 0);
+        ctx?.clearRect(0, 0, oldWidth, oldHeight);
+        // 还原canvas设置
+        ctx?.restore();
+        canvas.current.style.display = '';
+    }
+    function initSelect()
+    {
         var span=document.createElement('span');
         span.innerText="Change Size of Sudoku:";
-        var select=document.createElement('select');
-        //οnchange="setDelType(this)"
+        var select=document.createElement('select');        
+        var puzinfo=document.getElementById("puzinfo");
+        select.style="font-size:x-large";
         //addSelects(select,7);        
         select.addEventListener("change",(e)=>{
+            isCheck=true;
             console.log(select.value);
-            document.getElementById("subject").innerText="";
-            ctx.clearRect(0,0,canvas.width,canvas.height);
-            num=select.value;
-            canvas.width=(num+3)*size;
-            canvas.height=(num+3)*size;
-            sockeRequect(num);
-        });
-        var puzinfo=document.getElementById("puzinfo");
-        var subj=document.getElementById("subject");
+            document.getElementById("subject").innerText="";            
+            //ctx.clearRect(0,0,canvas.width,canvas.height);
+            num=parseInt(select.value);
+            sockeRequect(num); 
+            showLoading();
+            adaptsize(window.visualViewport.width,window.visualViewport.height*0.9);                     
+            puzinfo.removeChild(span);            
+            puzinfo.removeChild(select);
+            drawLoading();
+        });        
+        var subj=document.getElementById("subject");        
+        //subj.style="font-size:xxx-small";
         puzinfo.insertBefore(span,subj);
-        puzinfo.insertBefore(select,subj);        
+        puzinfo.insertBefore(select,subj);
+        addSelects(select,num);         
+    }
+    function initKodo()
+    {                
         canvas.onselectstart = function (e) { return false; };		//for Chrome, disable text select while dragging        
         canvas.addEventListener('drop', adrop, false);
         canvas.addEventListener('dragenter', adragenter, false);
@@ -791,58 +844,69 @@
         
         canvas.addEventListener('pointerdown', (e)=>{ 
         
-            }, false);
+        }, false);
         canvas.addEventListener('pointermove',  (e)=>{ 
         
-            }, false);        
+        }, false);        
         canvas.addEventListener('pointerup',  (e)=>{ 
         
-            }, false);
+        }, false);
         canvas.addEventListener('pointerleave', (e)=>{ 
         
-            }, false);
+        }, false);
         canvas.addEventListener('pointercancel', (e)=>{ 
         
-            }, false);        
+        }, false);        
         
         canvas.addEventListener('mouseleave', (e)=>{ 
         
-            }, false);
+        }, false);
         
         canvas.addEventListener('touchstart', (e)=>{ 
         
-            }, false);        
+        }, false);        
         canvas.addEventListener('touchmove', (e)=>{ 
         
-            }, false);
+        }, false);
         canvas.addEventListener('touchend', (e)=>{ 
         
-            }, false);
+        }, false);
         canvas.addEventListener('touchcancel', (e)=>{ 
         
-            }, false);
+        }, false);
         
         canvas.addEventListener('onresize', (e)=>{ 
-            console.log(e);
-            }, false);
-        
-               
-        var num=query("num")
-        if(num<2)num=7;
-        addSelects(select,num);
-        canvas.width=(num+3)*size;
-        canvas.height=(num+3)*size;
+            
+        }, false);
+                                             
+        adaptsize(window.visualViewport.width,window.visualViewport.height*0.9);
         var alien=query("alien");
-        sockeRequect(num);        
+        sockeRequect(num);    
+    }
+    
+    window.onload=function()
+    {        
+        num=query("num")
+        if(num<2)num=7;
+        
+        canvas=document.getElementById("sudoku");
+        ctx=canvas.getContext("2d"); 
+        
+        adaptsize(window.visualViewport.width,window.visualViewport.height*0.9);        
+        drawLoading();
+        
+        setTimeout(function(){
+            initKodo();
+        },300);        
     }
   </script>
 </head>
-<body>
+<body>  
   <div id="puzinfo">
-    <div id="subject"></div>	
-  </div>  
-  <!--div id="loading">拼命加载中....<button id="close" type="button" onclick=removeLoading() hidden=true>X</button></div>
-  <div><a href="/Hodoku.jar">Hodoku<a></div-->
+    <div id="loading">拼命加载中....<button id="close" type="button" onclick=removeLoading() hidden=true>X</button></div>
+    <div id="subject" style="font-size:xx-small"></div>
+  </div>    
+  <!--div><a href="/Hodoku.jar">Hodoku<a></div-->
 
   <canvas id="sudoku" width="1000" height="1000"></canvas>
   <!--div><a href="/NPGen.jar">NPGen<a></div-->
