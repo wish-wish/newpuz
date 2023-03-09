@@ -114,8 +114,8 @@
     var puz=""    
     //var offsetx=1.4;
     //var offsety=1.4;    
-    var offsetx=0;
-    var offsety=0;
+    var offsetx=0.01;
+    var offsety=0.01;
     var offunx=0.1;
     var offuny=0.1;
     var num=7;
@@ -308,7 +308,7 @@
     function storkeAlien(block)
     {
         var bolds=[];
-        ctx.lineWidth=5;
+        ctx.lineWidth=10;
         //ctx.lineStyle="red";
         ctx.beginPath();        
         for(var i=0;i<num;i++)
@@ -401,7 +401,6 @@
         else
             ctx.fillStyle="red";
         ctx.strokeStyle="blue"; 
-        //ctx.clearRect(cell.minx,cell.miny,cell.maxx,cell.maxy);
         if(cell.value>0)
         {
             if(isStroke||cell.user)
@@ -417,7 +416,7 @@
     }
     function drawSelect(cx,cy)
     {
-        //ctx.clearRect(0,0,canvas.width,canvas.height);
+        ctx.clearRect(0,0,canvas.width,canvas.height);
         let hid=cells[cx][cy].bi;        
         for(let i=0;i<num;i++)
         {
@@ -545,7 +544,7 @@
         var vals=[],vals1=[],vals2=[];
         var unsuccs=[];
         for(var i=0;i<num;i++)
-        {
+        {            
             vals=[];
             //floor
             for(var j=0;j<num;j++)
@@ -561,7 +560,7 @@
                     vals.push(cells[i][j].value);                
                 }
             }
-            if(!ret) break;
+            if(!ret||vals.length<num) break;
             if(ret&&vals.length==num)
             {            
                 vals1=[];
@@ -579,7 +578,7 @@
                         vals1.push(cells[j][i].value);   
                     }
                 }
-                if(!ret1) break;
+                if(!ret1||vals1.length<num) break;
             }
         }        
         if(ret1&&ret&&vals.length==num&&vals1.length==num)
@@ -601,7 +600,7 @@
                         vals2.push(blocks[i].cells[j].value);
                     }
                 }
-                if(!ret2)
+                if(!ret2||vals2.length<num)
                 {
                     break;
                 }
