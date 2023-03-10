@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <!--meta name="viewport" content="width=device-width">
   <meta name="viewport" content="initial-scale=1"-->
-  <title>kodo(题目,答案,畸形)</title>
+  <title>kodo(题目,答案,畸形,唯一)</title>
   <!--link rel="stylesheet" type="text/css" href="style.css"/-->
   <script type="text/javascript">
   
@@ -114,8 +114,8 @@
     var puz=""    
     //var offsetx=1.4;
     //var offsety=1.4;    
-    var offsetx=0.01;
-    var offsety=0.01;
+    var offsetx=0.02;
+    var offsety=0.02;
     var offunx=0.1;
     var offuny=0.1;
     var num=7;
@@ -126,13 +126,49 @@
     var ganswer="";
     var selectcell=null;
     var blocks=[];    
-    function adaptsize(width,height)
+    var isLans=false;
+    function adaptsize(awidth,aheight)
     {
-        let s=width;
-        if(s>height) s= height;
-        size=Math.floor(s/(num+0.05));
-        canvas.width=size*(num+0.1);
-        canvas.height=size*(num+1.11);
+        let mins=awidth;
+        let maxs=awidth;
+        if(mins>aheight) mins=aheight;
+        if(maxs<aheight) maxs=aheight;
+        isLans=false;
+        if(awidth>=aheight) isLans=true;
+        let diff=maxs-mins;        
+        let bordernb=1+offsetx+offunx;
+        let borderna=bordernb;
+        size=Math.floor(mins/(num+borderna));      
+        let margin=2;
+        //if(diff>=(size*bordernb))
+        if(diff>=(size))
+        {        
+            if(isLans)
+            {
+                canvas.width=size*(num+bordernb)+margin;
+                canvas.height=size*(num+borderna)+margin;
+            }else
+            {
+                canvas.width=size*(num+borderna)+margin;//-8;
+                canvas.height=size*(num+bordernb)+margin;
+            }                   
+        }else
+        {   
+            //size=Math.floor((maxs-size*bordernb)/(num+borderna));              
+            if(isLans)
+            {                
+                canvas.width=size*(num+bordernb)+margin;
+                canvas.height=size*(num+borderna)+margin;
+            }
+            else
+            {
+                canvas.width=size*(num+borderna)+margin;//-8;
+                canvas.height=size*(num+bordernb)+margin;
+            }
+        }
+        
+        if(canvas.width>awidth) canvas.width=awidth;
+        if(canvas.height>aheight) canvas.width=aheight;
     }
     var appendBolds=function(bolds,line)
     {
@@ -183,6 +219,11 @@
     var qryCode=function(val)
     {
         var str="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz@";
+        return str[val];
+    }
+    var qryFuns=function(val)
+    {
+        var str="0000000000000000000000000000000000000000000000000000000000000@";
         return str[val];
     }
     var drawKodoku=function(puzzle,block)
@@ -255,8 +296,6 @@
             var c={minx:(hpx+i)*size,miny:(hpy)*size,maxx:(hpx+i+1)*size,maxy:(hpy+1)*size,value:qryCode(i+1)};
             funs[funs.length-1].push(c);            
         }
-        
-        /*
         hpx=num+offsetx+offunx;
         hpy=offsety;
         funs.push([]);
@@ -268,11 +307,25 @@
             ctx.lineTo((hpx+1)*size,(hpy+i)*size);
             ctx.lineTo((hpx)*size,(hpy+i)*size);  
             
-            ctx.fillText(qryCode(funs[1].length*2-i),(hpx+0.5)*size,(hpy+i+0.5)*size);            
-            var c={minx:(hpx)*size,miny:(hpy+i)*size,maxx:(hpx+1)*size,maxy:(hpy+i+1)*size,value:qryCode(funs[1].length*2-i)};
+            ctx.fillText(qryFuns(funs[1].length*2-i),(hpx+0.5)*size,(hpy+i+0.5)*size);            
+            var c={minx:(hpx)*size,miny:(hpy+i)*size,maxx:(hpx+1)*size,maxy:(hpy+i+1)*size,value:qryFuns(funs[1].length*2-i)};
+            //ctx.fillText(qryCode(i+1),(hpx+0.5)*size,(hpy+i+0.5)*size);            
+            //var c={minx:(hpx)*size,miny:(hpy+i)*size,maxx:(hpx+1)*size,maxy:(hpy+i+1)*size,value:qryCode(i+1)};
             funs[funs.length-1].push(c);
-        } 
+        }    
         
+        //corner        
+        hpy+=offuny+num;
+        ctx.moveTo((hpx)*size,(hpy)*size);
+        ctx.lineTo((hpx)*size,(hpy+1)*size);
+        ctx.lineTo((hpx+1)*size,(hpy+1)*size);
+        ctx.lineTo((hpx+1)*size,(hpy)*size);
+        ctx.lineTo((hpx)*size,(hpy)*size);  
+        ctx.fillText('0',(hpx+0.5)*size,(hpy+0.5)*size);            
+        var c={minx:(hpx)*size,miny:(hpy)*size,maxx:(hpx+1)*size,maxy:(hpy+1)*size,value:'0'};
+        funs[funs.length-1].push(c);
+        
+        /*                 
         hpy=offuny;
         hpx=offsetx;        
         for(var i=0;i<num;i++)//top
@@ -726,7 +779,8 @@
         let socket=new WebSocket(addr); 
         socket.binaryType = "arraybuffer";
         socket.onopen = function(evt) {
-            var str="rubric:num:"+num;
+            var str="rubric:num:"+num+":0";
+            //var str="rubric:num:99:0";
             socket.send(toData(str));
         };
         socket.onmessage = function(evt) {              
@@ -767,8 +821,9 @@
             if(i==num)
                 sel+="<option value="+i+" selected='selected'>Size="+i+"</option>"    
             else
-                sel+="<option value="+i+">Size="+i+"</option>"    
+                sel+="<option value="+i+">Size="+i+"</option>"
         }
+        sel+="<option value=99>Size=99</option>"
         sel+="</select>"
         select.innerHTML=sel;
     }
@@ -817,6 +872,7 @@
             //ctx.clearRect(0,0,canvas.width,canvas.height);
             num=parseInt(select.value);
             sockeRequect(num); 
+            if(num==99) num=9;            
             showLoading();
             adaptsize(window.visualViewport.width,window.visualViewport.height*0.9);                     
             puzinfo.removeChild(span);            
@@ -896,6 +952,7 @@
         if(num<2)num=7;
         
         canvas=document.getElementById("sudoku");
+        document.body.style="margin:0";
         ctx=canvas.getContext("2d"); 
         
         adaptsize(window.visualViewport.width,window.visualViewport.height*0.9);        
@@ -909,7 +966,7 @@
 </head>
 <body>  
   <div id="puzinfo">
-    <div id="loading">拼命加载中....<button id="close" type="button" onclick=removeLoading() hidden=true>X</button></div>
+    <div id="loading" style="font-size:xx-large">拼命加载中....<button id="close" type="button" onclick=removeLoading() hidden=true>X</button></div>
     <div id="subject" style="font-size:xx-small"></div>
   </div>    
   <!--div><a href="/Hodoku.jar">Hodoku<a></div-->
