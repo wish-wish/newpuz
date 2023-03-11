@@ -9,3 +9,6 @@ drop the newpuzzle.html to chrome to see the result, change num=? param to set t
 <br/>
 
 <a href="https://www.5icoin.com/newpuzzle.html?num=7">newpuzzle<a>
+
+<br/>
+<image src="kodo.png"></image>
