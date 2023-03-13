@@ -209,7 +209,7 @@ var started=false;
 let timetxt="";
 function adaptsize(awidth,aheight)
 {    
-    aheight*=0.93;
+    aheight*=0.98;
     let mins=awidth;
     let maxs=awidth;
     if(mins>aheight) mins=aheight;
@@ -409,6 +409,7 @@ var refreshKodoku=function(puzzle,block)
         {
             
             var b=cells[i][j];
+            var val=cells[i][j].value;
             b.minx=(i+offsetx)*size;
             b.miny=(j+offsety)*size;
             b.maxx=(i+1+offsetx)*size;
