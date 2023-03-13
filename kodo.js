@@ -568,20 +568,22 @@ function strokeFuns()
 
 function drawTimeTxt(txt)
 {
-    ctx.fillStyle="#00ffff";
+    ctx.beginPath();
+    ctx.fillStyle="#00aaff";
+    ctx.lineWidth=3*canvas.height/1000;
     let si=Math.floor(30*canvas.height/1000);
     let clamp=si;
     if(si<10) si=10;
     if(si>30) si=30;
     ctx.font = si+"px serif";    
     ctx.textAlign="start";    
-    if(clamp>20) clamp=20;
-    let atimetxt=timetxt+"["+txt+"].dev:cclin";
-    let m=ctx.measureText(atimetxt)
+    if(clamp>20) clamp=20;    
+    let m=ctx.measureText(txt)
     let h=canvas.height-m.fontBoundingBoxAscent
-    ctx.clearRect(m.fontBoundingBoxDescent*0.5,h-m.fontBoundingBoxAscent/2-2,canvas.width,h);
-    ctx.fillText(atimetxt,m.fontBoundingBoxDescent*0.5,h);
-    ctx.stroke();
+    ctx.clearRect(m.fontBoundingBoxDescent*0.5,h-m.fontBoundingBoxAscent/2-5,canvas.width,h);
+    ctx.fillText(txt,m.fontBoundingBoxDescent*0.5,h);
+    ctx.closePath();
+    //ctx.stroke();
     return m.fontBoundingBoxAscent*1.2;
 }
 
@@ -1075,23 +1077,54 @@ function startTimer()
 {
     let uset=Date.now()-tick;
         
-    let dat=new Date();        
-    let titxt=
-        //dat.getFullYear()+"/"+fmtStr((dat.getMonth()+1),2)+"/"+fmtStr(dat.getDate(),2)+" "+
-        fmtStr(dat.getHours(),2)+":"+fmtStr(dat.getMinutes(),2)+":"+fmtStr(dat.getSeconds(),2)
-        +":"+fmtStr(dat.getMilliseconds(),3);    
+    let dat=new Date();              
     let minis=uset%1000;
     let second=Math.floor(uset/1000);
     let minute=Math.floor(second/60);
     let hour=Math.floor(minute/60);
-    let spand=fmtStr(hour,3)+":"+fmtStr(minute%60,2)+":"+fmtStr(second%60,2);
+    let dt=Math.floor(hour/24);
+    let spand=fmtStr(second%60,2);
+    if(hour>0)
+    {
+        spand=fmtStr(hour,3)+":"+fmtStr(minute%60,2)+":"+fmtStr(second%60,2);
+    }
+    else if(minute>0)
+    {
+        spand=fmtStr(minute%60,2)+":"+fmtStr(second%60,2);
+    }
+    else
+    {
+        spand=fmtStr(second%60,2);
+    }    
     //var span=document.getElementById("span");    
     //if(span) span.innerHTML=titxt+"--"+spand+"  cc";
     if(started)
-    {
-        strokeFuns();
-        drawTimeTxt(titxt+".in."+spand);    
-    }else
+    {        
+        let titxt="";//dat.getFullYear()+"/"+fmtStr((dat.getMonth()+1),2)+"/"+fmtStr(dat.getDate(),2)+" "+            
+        let dts=timetxt.split(' ');
+        let ds=dts[0].split('/');
+        let ts=dts[1].split(':');
+        if(ds[2]==fmtStr(dat.getDate(),2)&&ts[0]==fmtStr(dat.getHours(),2)&&ts[1]==fmtStr(dat.getMinutes(),2)&&ts[2]==fmtStr(dat.getSeconds(),2))
+        {
+            titxt=fmtStr(dat.getMilliseconds(),3);
+        }else if(ds[2]==fmtStr(dat.getDate(),2)&&ts[0]==fmtStr(dat.getHours(),2)&&ts[1]==fmtStr(dat.getMinutes(),2))
+        {
+            titxt=fmtStr(dat.getSeconds(),2)+":"+fmtStr(dat.getMilliseconds(),3);
+        }else if(ds[2]==fmtStr(dat.getDate(),2)&&ts[0]==fmtStr(dat.getHours(),2))
+        {
+            titxt=fmtStr(dat.getMinutes(),2)+":"+fmtStr(dat.getSeconds(),2)+":"+fmtStr(dat.getMilliseconds(),3);
+        }else if(ds[2]==fmtStr(dat.getDate(),2))
+        {
+            titxt=fmtStr(dat.getHours(),2)+":"+fmtStr(dat.getMinutes(),2)+":"+fmtStr(dat.getSeconds(),2)+":"+fmtStr(dat.getMilliseconds(),3);  
+        }else
+        {
+            titxt=fmtStr(dat.getDate(),2)+":"+fmtStr(dat.getHours(),2)+":"+fmtStr(dat.getMinutes(),2)+":"+fmtStr(dat.getSeconds(),2)+":"+fmtStr(dat.getMilliseconds(),3);  
+        }
+        let atimetxt=timetxt+"["+titxt+".up."+spand+"].dev by cclin";
+        drawTimeTxt(atimetxt);
+        strokeFuns();                    
+    }
+    else
     {
         timetxt=fmtStr(dat.getFullYear(),4)+"/"+fmtStr((dat.getMonth()+1),2)+"/"+fmtStr(dat.getDate(),2)
         +" "+fmtStr(dat.getHours(),2)+":"+fmtStr(dat.getMinutes(),2)+":"+fmtStr(dat.getSeconds(),2)+":"
