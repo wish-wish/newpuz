@@ -1199,6 +1199,8 @@ function startLocal(num=0)
 
 function sockeRequect(anum)
 {        
+	if(anum<1) anum=query("num")	
+    if(anum<2) anum=7;	
     started=false;
     var addr="ws://www.5icoin.com:9818";
     if(window.location.href.startsWith("https://"))
