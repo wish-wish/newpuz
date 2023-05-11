@@ -71,7 +71,7 @@ var isLe = (function() {
 })();
 
 var len=4;
-var txt="拼命加载中....(如果等很久了请刷新试试！)";
+var txt="拼命加载中....(如果等很久了或显示不全请刷新试试！)";
 var count=0;
 var intid=0;
 function showLoading()
@@ -1377,7 +1377,9 @@ function initKodo()
                                          
     adaptsize(window.visualViewport.width,window.visualViewport.height);
     var alien=query("alien");
-    sockeRequect(num);    
+	setTimeout(function(){
+		sockeRequect(num);
+	},1700);    
 }
 
 window.onload=function()
@@ -1395,7 +1397,7 @@ window.onload=function()
     
     setTimeout(function(){
         initKodo();
-    },300);        
+    },700);        
 }
 
 // window.onload=function()
