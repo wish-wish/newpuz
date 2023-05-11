@@ -328,7 +328,7 @@ function drawRoundRect(points)
 }
 
 var codes="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz@";
-var funcodes="0000000000000000000000000000000000000000000000000000000000清新@";
+var funcodes="0000000000000000000000000000000000000000000000000000000000零新@";
 
 var qryCode=function(val)
 {    
@@ -1008,7 +1008,7 @@ function amousedown(e)
                 drawSelect(selectcell.x,selectcell.y);
             }        
         }
-        else if(funs[hits[1]][hits[2]].value=='清')
+        else if(funs[hits[1]][hits[2]].value=='清'||funs[hits[1]][hits[2]].value=='零')
         {
             for(var i=0;i<cells.length;i++)
             {
