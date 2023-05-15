@@ -193,7 +193,7 @@ var offsetx=0.02;
 var offsety=0.02;
 var offunx=0.1;
 var offuny=0.1;
-var num=7;
+var num=4;
 var cells=[]; 
 var funs=[];
 var gblock="";
@@ -1221,7 +1221,7 @@ function startLocal(num=0)
 function sockeRequect(anum)
 {        
 	if(anum<1) anum=query("num")	
-    if(anum<2) anum=7;	
+    if(anum<2) anum=4;	
     started=false;
     var addr="ws://www.5icoin.com:9818";
     if(window.location.href.startsWith("https://"))
@@ -1317,8 +1317,9 @@ function initSelect()
     var select=document.createElement('select'); 
     select.id="select";
     span.id="span";
+    span.style="font-size:xxx-large";
     var puzinfo=document.getElementById("puzinfo");
-    select.style="font-size:x-large";
+    select.style="font-size:xxx-large";
     //addSelects(select,7);        
     select.addEventListener("change",(e)=>{
         isCheck=true;
@@ -1406,7 +1407,7 @@ function initKodo()
 window.onload=function()
 {        
     num=query("num")
-    if(num<2)num=7;    
+    if(num<2)num=4;    
     canvas=document.getElementById("sudoku");
     document.body.style="margin:0";
     ctx=canvas.getContext("2d"); 
