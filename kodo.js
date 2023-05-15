@@ -959,7 +959,7 @@ function checkAnswer()
 function reStart()
 {
     started=false;
-    //ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.clearRect(0,0,canvas.width,canvas.height);
     document.getElementById("subject").innerText="";
     var puzinfo=document.getElementById("puzinfo");
     var span=document.getElementById("span");
@@ -1170,7 +1170,7 @@ function startKodo(puz,ans,house)
     initSelect();
     strokeidx=0;
     adaptsize(window.visualViewport.width,window.visualViewport.height);
-    //ctx.clearRect(0,0,canvas.width,canvas.height);            
+    ctx.clearRect(0,0,canvas.width,canvas.height);            
     drawKodoku(puz,house);
     isCheck=false;		
     //console.log("recv:"+str.length);     
@@ -1324,7 +1324,7 @@ function initSelect()
         isCheck=true;
         console.log(select.value);
         document.getElementById("subject").innerText="";            
-        //ctx.clearRect(0,0,canvas.width,canvas.height);
+        ctx.clearRect(0,0,canvas.width,canvas.height);
         num=parseInt(select.value);
         sockeRequect(num); 
         if(num==99) num=9;            
