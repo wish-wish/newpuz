@@ -193,9 +193,9 @@ var offsetx=0.02;
 var offsety=0.02;
 var offunx=0.1;
 var offuny=0.1;
-var anum=Math.floor(Math.random()*10);
-if (anum<2) anum=2;
-var num=anum;
+var rnum=Math.floor(Math.random()*10);
+if (rnum<2) rnum=2;
+var num=rnum;
 var cells=[]; 
 var funs=[];
 var gblock="";
@@ -363,6 +363,7 @@ var qryFuns=function(val)
 }
 
 var m=15;
+var cellinit=false;
 var drawKodoku=function(puzzle,block)
 {                
     gblock=block;
@@ -379,6 +380,7 @@ var drawKodoku=function(puzzle,block)
     ctx.textBaseline="middle";        
     ctx.beginPath();
     cells=[];
+    cellinit=false;
     for(var i=0;i<num;i++)
     {
         cells.push([]);
@@ -404,7 +406,7 @@ var drawKodoku=function(puzzle,block)
         }
     }                        
     ctx.closePath();  
-           
+    cellinit=true;       
     ctx.stroke();  
     
     strokeFuns();
@@ -839,22 +841,23 @@ function getBlock(bi)
 function getGroups()
 {
     blocks=[];
-    for(var i=0;i<gblock.length;i++)
-    {
-        var x=Math.floor(i/num);
-        var y=i%num;
-        var blo=getBlock(gblock[i]);
-        if(blo!=null)
+    if(cellinit)
+        for(var i=0;i<gblock.length;i++)
         {
-            blo.cells.push(cells[x][y]);
+            var x=Math.floor(i/num);
+            var y=i%num;
+            var blo=getBlock(gblock[i]);
+            if(blo!=null)
+            {
+                blo.cells.push(cells[x][y]);
+            }
+            else
+            {                
+                var group={bi:gblock[i],cells:[]};
+                blocks.push(group);
+                group.cells.push(cells[x][y]);
+            }
         }
-        else
-        {                
-            var group={bi:gblock[i],cells:[]};
-            blocks.push(group);
-            group.cells.push(cells[x][y]);
-        }
-    }
     return blocks;
 }
 function bigger(i,j,val)
@@ -969,6 +972,8 @@ function reStart()
     puzinfo.removeChild(span);            
     puzinfo.removeChild(select);
     drawLoading();
+    rnum=Math.floor(Math.random()*10);
+    num=rnum;
     setTimeout(function(){            
         sockeRequect(num);
     },1000);        
@@ -1223,7 +1228,7 @@ function startLocal(num=0)
 function sockeRequect(anum)
 {        
 	if(anum<1) anum=query("num")	
-    if(anum<2) anum=anum;	
+    if(anum<2) anum=rnum;	
     started=false;
     var addr="ws://www.5icoin.com:9818";
     if(window.location.href.startsWith("https://"))
@@ -1409,7 +1414,7 @@ function initKodo()
 window.onload=function()
 {        
     num=query("num")
-    if(num<2)num=anum;
+    if(num<2)num=rnum;
     canvas=document.getElementById("sudoku");
     document.body.style="margin:0";
     ctx=canvas.getContext("2d"); 
