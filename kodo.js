@@ -1183,12 +1183,15 @@ function startKodo(puz,ans,house)
     //console.log("recv:"+str.length);     
     clearInterval(interid);
     interid=setInterval(function(){
-        var issucc=(checkAnswer()||checkSuccess());
-        if(!isCheck&&issucc)
-        {      
-            isCheck=true;
-            reStart();
-        }
+        if(cellinit)
+        {
+            var issucc=(checkAnswer()||checkSuccess());
+            if(!isCheck&&issucc)
+            {      
+                isCheck=true;
+                reStart();
+            }
+        }        
     },2000);
 }
 
