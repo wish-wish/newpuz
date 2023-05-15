@@ -271,6 +271,12 @@ var appendBolds=function(bolds,line)
 }
 var drawLoading=function()
 {
+    var r=Math.floor(Math.random()*10);
+    if(r>1)
+    {
+        drawHeart();
+        return;
+    }    
     ctx.lineWidth=1*canvas.height/1000;  
     ctx.font = size/5*Math.sqrt(num)/2+"px serif";
     //ctx.font="italic 35px 黑体";  
@@ -300,6 +306,21 @@ var drawLoading=function()
     ctx.closePath();
     ctx.stroke();
     //ctx.fill();
+}
+
+var drawHeart=function()
+{
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+	var img=new Image();
+    img.src="./heart2.png";
+    var that=this;
+    img.onload=function()
+    {
+        //let width=img.width;
+        //let height=img.height;
+        ctx.drawImage(img,ctx.canvas.width/4,ctx.canvas.height/4,ctx.canvas.width/2,ctx.canvas.height/2);
+        //ctx.drawImage(img,0,0,100,100);
+    }
 }
 
 function drawRoundRect(points)
@@ -567,7 +588,7 @@ function strokeFuns()
 }
 
 function drawTimeTxt(txt)
-{
+{    
     ctx.beginPath();
     ctx.fillStyle="#00aaff";
     ctx.lineWidth=3*canvas.height/1000;
@@ -938,7 +959,7 @@ function checkAnswer()
 function reStart()
 {
     started=false;
-    ctx.clearRect(0,0,canvas.width,canvas.height);
+    //ctx.clearRect(0,0,canvas.width,canvas.height);
     document.getElementById("subject").innerText="";
     var puzinfo=document.getElementById("puzinfo");
     var span=document.getElementById("span");
@@ -1149,7 +1170,7 @@ function startKodo(puz,ans,house)
     initSelect();
     strokeidx=0;
     adaptsize(window.visualViewport.width,window.visualViewport.height);
-    ctx.clearRect(0,0,canvas.width,canvas.height);            
+    //ctx.clearRect(0,0,canvas.width,canvas.height);            
     drawKodoku(puz,house);
     isCheck=false;		
     //console.log("recv:"+str.length);     
@@ -1373,9 +1394,9 @@ function initKodo()
     
     canvas.addEventListener('onresize', (e)=>{ 
         
-    }, false);
-                                         
+    }, false);                                         
     adaptsize(window.visualViewport.width,window.visualViewport.height);
+    drawHeart();
     var alien=query("alien");
 	setTimeout(function(){
 		sockeRequect(num);
@@ -1385,16 +1406,13 @@ function initKodo()
 window.onload=function()
 {        
     num=query("num")
-    if(num<2)num=7;
-    
+    if(num<2)num=7;    
     canvas=document.getElementById("sudoku");
     document.body.style="margin:0";
     ctx=canvas.getContext("2d"); 
-    m=drawTimeTxt();
-    adaptsize(window.visualViewport.width,window.visualViewport.height);   
-       
-    drawLoading();
-    
+    m=drawTimeTxt();    
+    adaptsize(window.visualViewport.width,window.visualViewport.height);          
+    drawLoading();    
     setTimeout(function(){
         initKodo();
     },700);        
