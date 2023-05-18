@@ -1,7 +1,7 @@
 # newpuz
-where is the boy.
+where is the boy?
 <br/>
-the boy at here.
+the boy at here. i am a lead programmer, i was seeking job a few years, where are you now, can you hire me? or support me ?  i am very hard now!
 <br/>
 sudoku puzzle generate, include answer, support abnormitly.
 <br/>
