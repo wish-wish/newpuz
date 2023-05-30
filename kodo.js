@@ -962,7 +962,7 @@ function checkAnswer()
     }
     return ret&&cells.length==num;
 }
-function reStart()
+function reStart(atip)
 {
     started=false;
     ctx.clearRect(0,0,canvas.width,canvas.height);
@@ -972,7 +972,10 @@ function reStart()
     var select=document.getElementById("select");
     puzinfo.removeChild(span);            
     puzinfo.removeChild(select);
-    drawLoading(['solved success','success cleared']);
+    var tip=['solved success','success solved'];
+    if(atip!=null)
+        tip=atip;
+    drawLoading(tip);
     rnum=Math.floor(Math.random()*10);
     num=rnum;
     clearInterval(interid);
@@ -1070,7 +1073,7 @@ function amousedown(e)
         }
         else if(funs[hits[1]][hits[2]].value=='新')
         {
-            reStart();
+            reStart(["started a new","a new started"]);
         }
         else if(funs[hits[1]][hits[2]].value=='格'||funs[hits[1]][hits[2]].value=='啶'||funs[hits[1]][hits[2]].value=='存')
         {            
