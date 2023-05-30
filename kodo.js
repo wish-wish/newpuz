@@ -115,8 +115,7 @@ var removeLoading=function(){
     {
         //gd.removeChild(loading);
         loading.hidden=true;
-		clearTimeout(intid);
-        console.log("removeLoading 1");
+		clearTimeout(intid);        
     }
 }
 
@@ -271,13 +270,13 @@ var appendBolds=function(bolds,line)
     }
     return false;
 }
-var drawLoading=function()
+var drawLoading=function(tip)
 {
     var r=Math.floor(Math.random()*10);
     if(r>1)
     {
-        drawHeart();
-        return;
+        //drawHeart();
+        //return;
     }    
     ctx.lineWidth=1*canvas.height/1000;  
     ctx.font = size/5*Math.sqrt(num)/2+"px serif";
@@ -304,6 +303,8 @@ var drawLoading=function()
     ctx.fillText(4,0+offset+fh,height/2+offset);
     var idx=Math.floor(Math.random()*2);
     var tips=['Loading Fight...','拼命加载中...'];
+    if(tip!=null)
+        tips=tip;
     ctx.fillText(tips[idx],width/2+offset,height/2+offset);
     ctx.closePath();
     ctx.stroke();
@@ -937,7 +938,7 @@ function checkSuccess()
         }            
     }
     if(ret&&ret1&&ret2&&vals.length==num&&vals1.length==num&&vals2.length==num){        
-        console.log("checkSuccess");
+        //console.log("checkSuccess");
     }
     return ret&&ret1&&ret2&&vals.length==num&&vals1.length==num&&vals2.length==num&&cells.length==num;
 }
@@ -957,7 +958,7 @@ function checkAnswer()
         if(!ret) break;
     }
     if(ret&&cells.length>0){        
-        console.log('checkAnswer');
+        //console.log('checkAnswer');
     }
     return ret&&cells.length==num;
 }
@@ -971,12 +972,29 @@ function reStart()
     var select=document.getElementById("select");
     puzinfo.removeChild(span);            
     puzinfo.removeChild(select);
-    drawLoading();
+    drawLoading(['solved success','success cleared']);
     rnum=Math.floor(Math.random()*10);
     num=rnum;
+    clearInterval(interid);
     setTimeout(function(){            
-        sockeRequect(num);
-    },1000);        
+        //sockeRequect(num);
+        ksockeRequect(num,function(tye,anum,st,tk,puz,ans,house){
+            if(tye=="kodo")
+            {
+                num=anum;
+                started=st;
+                tick=tk;
+                startKodo(puz,ans,house);    
+            }
+            else
+            {
+                num=anum;
+                started=st;
+                tick=tk;
+                startLocal(anum);  
+            }
+        });
+    },2000);        
 }
 
 function hasLevelUser()
@@ -1065,17 +1083,7 @@ function amousedown(e)
                 reStart();
             }
         }
-    }        
-    /*
-    ctx.beginPath();        
-    ctx.moveTo(posx,posy);
-    ctx.lineTo(posx,posy+0.3*size);
-    ctx.lineTo(0.3*size+posx,posy+0.3*size);
-    ctx.lineTo(0.3*size+posx,posy);
-    ctx.lineTo(posx,posy);        
-    ctx.closePath();        
-    ctx.stroke();
-    */
+    }
 }
 function amousemove(e)
 {
@@ -1227,7 +1235,7 @@ function startLocal(num=0)
     startKodo(puz[0],puz[1],puz[2]);
     //console.log(puz);
 }
-
+/*
 function sockeRequect(anum)
 {        
 	if(anum<1) anum=query("num")	
@@ -1261,9 +1269,6 @@ function sockeRequect(anum)
         socket.onerror = function(evt) {
             console.log("error:"+evt);
             socket.close();
-            // var n=Math.floor(Math.random()*12);
-            // if(n<2) n=2;
-            // num=n;
             startLocal(anum);            
         };
         socket.onclose = function(evt) {
@@ -1271,13 +1276,10 @@ function sockeRequect(anum)
         };    
     } catch (error) {
         console.log(error);
-        // var n=Math.floor(Math.random()*12);
-        // if(n<2) n=2;
-        // num=n;
         startLocal(anum);                
     }    
 }
-
+*/
 var addSelects=function(select,num)
 {
     var sel="<select id='select'>"
@@ -1330,15 +1332,32 @@ function initSelect()
     span.style="font-size:xxx-large";
     var puzinfo=document.getElementById("puzinfo");
     select.style="font-size:xxx-large";
-    //addSelects(select,7);        
+    //addSelects(select,7);      
+    
     select.addEventListener("change",(e)=>{
         isCheck=true;
-        console.log(select.value);
         document.getElementById("subject").innerText="";            
         ctx.clearRect(0,0,canvas.width,canvas.height);
         num=parseInt(select.value);
-        sockeRequect(num); 
-        if(num==99) num=9;            
+        //sockeRequect(num); 
+        if(num==99) num=9;
+        clearInterval(interid);
+        ksockeRequect(num,function(tye,anum,st,tk,puz,ans,house){
+            if(tye=="kodo")
+            {
+                num=anum;
+                started=st;
+                tick=tk;
+                startKodo(puz,ans,house);    
+            }
+            else
+            {
+                num=anum;
+                started=st;
+                tick=tk;
+                startLocal(anum);  
+            }
+        });                  
         showLoading();
         adaptsize(window.visualViewport.width,window.visualViewport.height);                     
         puzinfo.removeChild(span);            
@@ -1410,7 +1429,23 @@ function initKodo()
     drawHeart();
     var alien=query("alien");
 	setTimeout(function(){
-		sockeRequect(num);
+		//sockeRequect(num);
+        ksockeRequect(num,function(tye,anum,st,tk,puz,ans,house){
+            if(tye=="kodo")
+            {
+                num=anum;
+                started=st;
+                tick=tk;
+                startKodo(puz,ans,house);    
+            }
+            else
+            {
+                num=anum;
+                started=st;
+                tick=tk;
+                startLocal(anum);  
+            }
+        });
 	},1700);    
 }
 
