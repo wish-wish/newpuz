@@ -786,23 +786,23 @@ function amouseover(e)
 }
 function adrop(e)
 {
-    console.log(e);
+    //console.log(e);
 }
 function adragenter(e)
 {
-    console.log(e);
+    //console.log(e);
 }
 function apaste(e)
 {
-    console.log(e);
+    //console.log(e);
 }
 function akeydown(e)
 {
-    console.log(e);
+    //console.log(e);
 }
 function akeyup(e)
 {
-    console.log(e);
+    //console.log(e);
 }    
 function qryHitCells(posx,posy)
 {
@@ -1357,7 +1357,8 @@ function initSelect()
                 tick=tk;
                 startLocal(anum);  
             }
-        });                  
+        });  
+        count=0;                
         showLoading();
         adaptsize(window.visualViewport.width,window.visualViewport.height);                     
         puzinfo.removeChild(span);            

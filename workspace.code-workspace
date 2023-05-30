@@ -8,6 +8,21 @@
 		},
 		{
 			"path": "..\\svgpath-master"
+		},
+		{
+			"path": "..\\..\\CPlusPlus\\inkscape-master"
+		},
+		{
+			"path": "..\\fabric.js-master"
+		},
+		{
+			"path": "..\\svg.js-master"
+		},
+		{
+			"path": "..\\three.js-dev"
+		},
+		{
+			"path": "..\\..\\CPlusPlus\\pngquant"
 		}
 	],
 	"settings": {}
