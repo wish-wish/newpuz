@@ -1099,7 +1099,7 @@ function amouseup(e)
 }
 function awheel(e)
 {
-    console.log(e);
+    //console.log(e);
 }   
 function fmtStr(val,len)
 {
