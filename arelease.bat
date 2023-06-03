@@ -1,0 +1,1 @@
+javascript-obfuscator kaso.js --compact true --self-defending true --output kaso2.js && uglifyjs kaso2.js --output kaso.min.js -c -m && del kaso2.js && javascript-obfuscator kodo.js --compact true --self-defending true --output kodo2.js && uglifyjs kodo2.js --output kodo.min.s.js -c -m && del kodo2.js && echo -- && echo Íê³É && echo -- && pause

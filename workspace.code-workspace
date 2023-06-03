@@ -7,9 +7,6 @@
 			"path": "..\\poker"
 		},
 		{
-			"path": "..\\svgpath-master"
-		},
-		{
 			"path": "..\\..\\CPlusPlus\\inkscape-master"
 		},
 		{
@@ -23,6 +20,15 @@
 		},
 		{
 			"path": "..\\..\\CPlusPlus\\pngquant"
+		},
+		{
+			"path": "..\\svg\\svgpath-master_"
+		},
+		{
+			"path": "..\\javascript-obfuscator-master"
+		},
+		{
+			"path": "..\\UglifyJS-master"
 		}
 	],
 	"settings": {}

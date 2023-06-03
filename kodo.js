@@ -396,14 +396,14 @@ var drawKodoku=function(puzzle,block)
                     ,[(i+1+offsetx)*size,(j+1+offsety)*size,(i+1+offsetx)*size,(j+offsety)*size]
                     ,[(i+1+offsetx)*size,(j+offsety)*size,(i+offsetx)*size,(j+offsety)*size]],user:0,x:i,y:j};
             cells[i].push(b);            
+            drawRect(b);
             if(val!='0'){
-                drawRect(b);
                 ctx.fillText(val,(i+0.5+offsetx)*size,(j+0.5+offsety)*size);
             }
-            else
-            {
-                drawRoundRct(b);
-            }
+            //else
+            //{
+            //    drawRoundRct(b);
+            //}
         }
     }                        
     ctx.closePath();  
@@ -982,6 +982,7 @@ function reStart(atip)
     setTimeout(function(){            
         //sockeRequect(num);
         ksockeRequect(num,function(tye,anum,st,tk,puz,ans,house){
+            startTimer();
             if(tye=="kodo")
             {
                 num=anum;
@@ -1346,6 +1347,7 @@ function initSelect()
         if(num==99) num=9;
         clearInterval(interid);
         ksockeRequect(num,function(tye,anum,st,tk,puz,ans,house){
+            startTimer();
             if(tye=="kodo")
             {
                 num=anum;
@@ -1435,6 +1437,7 @@ function initKodo()
 	setTimeout(function(){
 		//sockeRequect(num);
         ksockeRequect(num,function(tye,anum,st,tk,puz,ans,house){
+            startTimer();
             if(tye=="kodo")
             {
                 num=anum;
