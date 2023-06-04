@@ -29,6 +29,9 @@
 		},
 		{
 			"path": "..\\UglifyJS-master"
+		},
+		{
+			"path": "E:\\Unity\\Tiny\\TinyRacing"
 		}
 	],
 	"settings": {}
