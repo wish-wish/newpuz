@@ -56,7 +56,22 @@ A54379182686791A5234918A2436577862539A4167518249A3543796A1823926A874152A95416378
 111222333444111222333444111222333444111222333444555666777888555666777888555666777888555666777888999AAABBBCCC999AAABBBCCC999AAABBBCCC999AAABBBCCC",
 "1203":"007602A0350000000000000070B0200A0406400083C9000700A2B870510050019006A00CB00AC004100800830762CA00C0007A310005304050070C0900000000000000570B802900.12.62..-1.2_6\n\
 897642AB35C1AB1C3548976271B92C5A84364A6583C9B2176CA2B873519457319426AB8CB52AC694137894831762CA5BC69B7A314825324851B76CA928C4A91576B313576B8C294A\n\
-111111777777111111777777222222888888222222888888333333999999333333999999444444AAAAAA444444AAAAAA555555BBBBBB555555BBBBBB666666CCCCCC666666CCCCCC"}
+111111777777111111777777222222888888222222888888333333999999333333999999444444AAAAAA444444AAAAAA555555BBBBBB555555BBBBBB666666CCCCCC666666CCCCCC",
+"1301":"C75000D000321AB0000007008480A0034001900003B20008A4000300000D020B000D0600030200206000B000A0300B03000C08000A01080000040001A400027B00004900C500D071C00A0000009D6490001000C38.13.69..-1.abnormity\n\
+C756B9DA48321AB23C5967D18486AC7342B19D55D3B216C8A47943C81A7D925B691D76B58342CA28645CB7D9A1379BD34A1C6852DA7198235C64B351A4D8927B6CB24986C513DA71C85A2346B79D6492D71BA5C38\n\
+11223333334441122355555644112235555564411723885556441172388888644117238888864417723899996AAB7723999996AAB7722999966AAB77CDDDDD66AAB77CCCCCD66AABBBBBCCCDDDAABBBBCCCCDDDDA",
+"1401":"003A0800E052000A20000000019062B00000000A8C10045C00B6800D000701CE30400050016E00A2D0070000D000050000000020000700004005EA0098B00200060DA9102000300B9500246008EB700000000C530D10000000047000E20300609800.14.80..-1.7_2\n\
+743AB89DEC5261BA2E37684DC19562BD495371EA8C1E945C72B683ADD857A1CE39462B5C816EB4A2D937936CD21A857B4EA9482BD1C735E646D5EA3C98B71285C67DA9132EB431AB95E7246DC8EB798426DA1C532D13C68B5EA479C7E213456B98DA\n\
+1133557799BBDD1133557799BBDD1133557799BBDD1133557799BBDD1133557799BBDD1133557799BBDD1133557799BBDD22446688AACCEE22446688AACCEE22446688AACCEE22446688AACCEE22446688AACCEE22446688AACCEE22446688AACCEE",
+"1402":"0063C000087E00000D900001A00030060D00A0E0024CA010000B09D6970280000D301400500143C00B0000000A00B0000000000400300000004006E2100300B20C50000960E7A6E0D00003015B200A090070400D0008B0000A900000DBE000045600.14.80..-1.abnormity\n\
+5A63CB2D987E41752D9E6B41AC3838964DC1A7E5B24CAE13875B29D697B28C5E6D3A14D957A143C68B2E6E812A94B5D7C3EB7564AC321D898D4976E21CB3A5B21C583AD964E7A6E4D27983C15B21CA39B57E486D1438B5D6EA927CC3DBE71824569A\n\
+1233445566777712334455667777123844556667771238445566677712384955666AAA123849556AAAAA1238495BBAAAAA1238495BBCCCCA1238499BBCCCCC1238499BBCCCCC1238899BBDDDDD1238899BBDDDDD1228899BBDDDDE1EEEEEEEEEEEEE",
+"1501":"00050E70F64C000000B400000F10070000000600000001F02D04EC05306AD60C380B09E70408000A0000070003500600A0800400E001E50000032C00C00F00D030080097000C00000A000D080DE905046F02CEB0760CA902D034000000040000000F001800000BE000000A2C80D305000.15.94..-1.5_3\n\
+9A851E7DF64C3B235EB46982AF1DC74C79FA3652DBE811FB2D74EC85396AD62C381BA9E754F8E64A25C1D79BF353D691AF8BC427EB91E5D674F32CA8C4AF7BD23E1865972F8C3E9B5A641DA83DE9B5746F12CEB576FCA912D8342193B5F4EC8A7D6FDC1842367BEA95674A2C81D395FEB\n\
+111444777AAADDD111444777AAADDD111444777AAADDD111444777AAADDD111444777AAADDD222555888BBBEEE222555888BBBEEE222555888BBBEEE222555888BBBEEE222555888BBBEEE333666999CCCFFF333666999CCCFFF333666999CCCFFF333666999CCCFFF333666999CCCFFF",
+"1502":"00F0300050A0200008050000040107CF080600040A0D500A00F69BC003006B0000401000093005300D06004E00E007B1000A830000006000F000D0000001A2000569004007900A0800EF0056000020400001900400D8EA100900FA05070009080BC9010F00000508000090805000D0600.15.91..-1.abnormity\n\
+BDF43E9C57A1268D28E59B6C34F1A7CF389612E4BA7D575AD4F69BCE23816BEF2C4A1875D9319537AD862C4EFBE4C7B1FD9A83526A826157F3B9DC4E83D1A2E7F569BC44C796BA58D1EF3256BCD8234EF7A19274BCD8EA13695FFA65E731D9284BC9E1AF3C4265B87D3192845B7FDC6EA\n\
+1111111111111112222222222222FF3333333333322FF3333BBBBBBBBBFF4444444BBBBBBFF44444444AAAAAFF555AAAAAAAAAAFF5555555555556FF6666666666666FE68888888888DDEE77777788888DDEE777999CCCDDDDEE779999CCCCDDDEE779999CCCCDDEEE779999CCCCDDEEE"}
 var isLe = (function() {
     var buf = new ArrayBuffer(2);
     new DataView(buf).setInt16(0, 256, true);
@@ -184,7 +199,7 @@ var dispSodoku=function(data)
 var ctx;
 var canvas;
 var size=50;
-var optionnum=13;
+var optionnum=16;
 var puz=""    
 //var offsetx=1.4;
 //var offsety=1.4;    
@@ -208,11 +223,14 @@ var isCheck=false;
 var interid=0;
 var started=false;
 let timetxt="";
+var sid=0;
 function adaptsize(awidth,aheight)
 {    
-    aheight*=0.98;
+    aheight*=0.98;    
+    //awidth=awidth-0.2*awidth/num;
+    //offsetx=0.1*awidth/num;
     let mins=awidth;
-    let maxs=awidth;
+    let maxs=awidth;    
     if(mins>aheight) mins=aheight;
     if(maxs<aheight) maxs=aheight;
     isLans=false;
@@ -352,7 +370,7 @@ function drawRoundRect(points)
 }
 
 var codes="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz@";
-var funcodes="0000000000000000000000000000000000000000000000000000000000零新@";
+var funcodes="00000000000000000000000000000000000000000000000000000000零误盲新@";
 
 var qryCode=function(val)
 {    
@@ -981,23 +999,25 @@ function reStart(atip)
     clearInterval(interid);
     setTimeout(function(){            
         //sockeRequect(num);
-        ksockeRequect(num,function(tye,anum,st,tk,puz,ans,house){
+        ksockeRequect(num,function(tye,anum,st,tk,puz,ans,house,id){
             startTimer();
             if(tye=="kodo")
             {
+                sid=id;
                 num=anum;
                 started=st;
                 tick=tk;
-                startKodo(puz,ans,house);    
+                startKodo(puz,ans,house,"<"+sid+">");    
             }
             else
             {
+                sid=-1;
                 num=anum;
                 started=st;
                 tick=tk;
                 startLocal(anum);  
             }
-        });
+        },sid);
     },2000);        
 }
 
@@ -1071,6 +1091,20 @@ function amousedown(e)
                 }
             }
             drawSelect(selectcell.x,selectcell.y);
+        }
+        else if(funs[hits[1]][hits[2]].value=='误'||funs[hits[1]][hits[2]].value=='错')
+        {
+            var cmd="rubric:error:"+sid+"";
+            ksocketCmds(cmd,function(){
+                reStart(["started a new","a new started"]);
+            })            
+        }
+        else if(funs[hits[1]][hits[2]].value=='盲')
+        {
+            var cmd="rubric:blind:"+sid+"";
+            ksocketCmds(cmd,function(){
+                reStart(["started a new","a new started"]);
+            })            
         }
         else if(funs[hits[1]][hits[2]].value=='新')
         {
@@ -1176,7 +1210,7 @@ function startTimer()
 }
 
 
-function startKodo(puz,ans,house)
+function startKodo(puz,ans,house,hint)
 {
     ganswer=ans;
     gpuzzle=puz;
@@ -1194,6 +1228,8 @@ function startKodo(puz,ans,house)
     isCheck=false;		
     //console.log("recv:"+str.length);     
     clearInterval(interid);
+    var stat=document.getElementById('stat');
+    stat.innerText=hint;
     interid=setInterval(function(){
         if(cellinit)
         {
@@ -1236,54 +1272,10 @@ function startLocal(num=0)
         });
     }    
     var puz=puzs[key].split('\n');
-    startKodo(puz[0],puz[1],puz[2]);
+    startKodo(puz[0],puz[1],puz[2],"<"+key+">");
     //console.log(puz);
 }
-/*
-function sockeRequect(anum)
-{        
-	if(anum<1) anum=query("num")	
-    if(anum<2) anum=rnum;	
-    started=false;
-    var addr="ws://www.5icoin.com:9818";
-    if(window.location.href.startsWith("https://"))
-        addr="wss://www.5icoin.com:9817";
-    let socket=new WebSocket(addr); 
-    try {        
-        socket.binaryType = "arraybuffer";
-        //new Date(year, monthIndex [, day [, hours [, minutes [, seconds [, milliseconds]]]]]);
-        tick=Date.now();
-        startTimer();
-        socket.onopen = function(evt) {
-            var str="rubric:num:"+anum+":0";
-            //var str="rubric:num:99:0";
-            socket.send(toData(str));
-        };
-        socket.onmessage = function(evt) {              
-            var array = new Uint8Array(evt.data);
-            var str = "";
-            for (var i = 0; i < array.length; i++) {
-                str = str + String.fromCharCode(array[i]);
-            }
-            var subject=str.split(":");                        
-            startKodo(subject[3],subject[1],subject[5]);
-            
-            socket.close();            
-        };
-        socket.onerror = function(evt) {
-            console.log("error:"+evt);
-            socket.close();
-            startLocal(anum);            
-        };
-        socket.onclose = function(evt) {
-            socket.close();
-        };    
-    } catch (error) {
-        console.log(error);
-        startLocal(anum);                
-    }    
-}
-*/
+
 var addSelects=function(select,num)
 {
     var sel="<select id='select'>"
@@ -1329,15 +1321,20 @@ function refresh()
 function initSelect()
 {
     var span=document.createElement('span');
-    span.innerText="Change Size of Sudoku:";
+    span.innerText="均屏匀平";
     var select=document.createElement('select'); 
     select.id="select";
     span.id="span";
     span.style="font-size:xxx-large";
     var puzinfo=document.getElementById("puzinfo");
     select.style="font-size:xxx-large";
-    //addSelects(select,7);      
     
+    //addSelects(select,7);      
+    var stat=document.createElement('stat');
+    stat.innerText="SRV";
+    stat.style="font-size:xxx-large";
+    stat.id="stat";
+
     select.addEventListener("change",(e)=>{
         isCheck=true;
         document.getElementById("subject").innerText="";            
@@ -1346,34 +1343,37 @@ function initSelect()
         //sockeRequect(num); 
         if(num==99) num=9;
         clearInterval(interid);
-        ksockeRequect(num,function(tye,anum,st,tk,puz,ans,house){
+        ksockeRequect(num,function(tye,anum,st,tk,puz,ans,house,id){
             startTimer();
             if(tye=="kodo")
             {
+                sid=id;
                 num=anum;
                 started=st;
                 tick=tk;
-                startKodo(puz,ans,house);    
+                startKodo(puz,ans,house,"<"+sid+">");    
             }
             else
             {
+                sid=-1;
                 num=anum;
                 started=st;
                 tick=tk;
                 startLocal(anum);  
             }
-        });  
+        },-1);  
         count=0;                
         showLoading();
         adaptsize(window.visualViewport.width,window.visualViewport.height);                     
         puzinfo.removeChild(span);            
-        puzinfo.removeChild(select);
+        puzinfo.removeChild(select);        
         drawLoading();
     });        
     var subj=document.getElementById("subject");        
     //subj.style="font-size:xxx-small";
     puzinfo.insertBefore(span,subj);
     puzinfo.insertBefore(select,subj);
+    span.appendChild(stat);
     addSelects(select,num);         
 }
 function initKodo()
@@ -1436,28 +1436,30 @@ function initKodo()
     var alien=query("alien");
 	setTimeout(function(){
 		//sockeRequect(num);
-        ksockeRequect(num,function(tye,anum,st,tk,puz,ans,house){
+        ksockeRequect(num,function(tye,anum,st,tk,puz,ans,house,id){
             startTimer();
             if(tye=="kodo")
             {
+                sid=id;
                 num=anum;
                 started=st;
                 tick=tk;
-                startKodo(puz,ans,house);    
+                startKodo(puz,ans,house,"<"+sid+">");    
             }
             else
             {
+                sid=-1;
                 num=anum;
                 started=st;
                 tick=tk;
                 startLocal(anum);  
             }
-        });
+        },-1);
 	},1700);    
 }
 
 window.onload=function()
-{        
+{                    
     num=query("num")
     if(num<2)num=rnum;
     canvas=document.getElementById("sudoku");
@@ -1476,9 +1478,12 @@ window.onload=function()
 //     canvas=document.getElementById("sudoku");
 //     document.body.style="margin:0";
 //     ctx=canvas.getContext("2d"); 
-    
 //     //adaptsize(window.visualViewport.width,window.visualViewport.height);        
 //     drawLoading();
-     
 // }
 //})();
+
+/*
+设备id是fcm id firebase提供给用户如果你正在建立一个ios web应用程序你可以使用apn和android web应用程序你可以使用fcm
+在android中firebase给每个用户一个fcm token，每次重新安装应用程序时该token可能会更改，因此每当用户打开应用程序尝试更新token并使用fcms /apns时，他们都有自己的方法来获取token
+*/
